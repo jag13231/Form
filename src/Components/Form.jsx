@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import "../App.css";
+import { RegisterApi } from "../Services/Api";
+import { StoreUserData } from "../Services/Storage";
+import { Authenticate } from "../Services/Auth";
+import { Navigate } from "react-router-dom";
 const Form = () => {
   const initialErrors = {
     name: { required: false },
@@ -13,8 +17,9 @@ const Form = () => {
     checkbox: { required: false },
     file: { required: false },
   };
-  const [errors, setErrors] = useState(initialErrors);
 
+  const [errors, setErrors] = useState(initialErrors);
+  const [loading,setLoading] = useState (false)
   const [inputs, setInputs] = useState({
     name: "",
     password: "",
@@ -32,8 +37,8 @@ const Form = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let errors = initialErrors;
     let submitError = false;
+    let errors = initialErrors;
     if (inputs.name === "") {
       errors.name.required = true;
       submitError = true;
@@ -71,16 +76,25 @@ const Form = () => {
       submitError = true;
     }
 
-    if (!submitError) {
-        alert("form submitted successfully");
-    }
-    
-
     setErrors({ ...errors });
-    
+
+    if (!submitError) {
+      setLoading(true)
+      RegisterApi(inputs)
+        .then((response) => {
+          StoreUserData(response.data.idToken);
+        })
+        .catch((err) => {
+          console.log(err);
+        }).finally(()=>{
+          setLoading(false)
+        })
+    }
   };
 
-
+  if (Authenticate()) {
+    return <Navigate to="/home"/>;
+  }
 
   return (
     <div className="form">
@@ -132,7 +146,7 @@ const Form = () => {
           id=""
         />
         {errors.date.required ? <p>Enter your DOB</p> : null}
-        <select name="select" onChange={handleInput}  id="">
+        <select name="select" onChange={handleInput} id="">
           <option value="">Select an Option</option>
           <option value="Yes">yes</option>
           <option value="NO">no</option>
@@ -140,6 +154,12 @@ const Form = () => {
         <textarea name="textarea" onChange={handleInput} id=""></textarea>
         <input type="file" onChange={handleInput} name="file" id="" />
         {errors.file.required ? <p>File is required</p> : null}
+
+        {loading?(<div  className="text-center" >
+                         <div className="spinner-border text-primary " role="status">
+                           <span className="sr-only">Loading...</span>
+                         </div>
+                       </div>):true}
         <input className="submit-form" type="submit" value="Submit" />
       </form>
     </div>
