@@ -1,23 +1,14 @@
 import React, { useState } from "react";
 import "../App.css";
+import { initialErrors } from "../Services/Errors";
 import { RegisterApi } from "../Services/Api";
 import { StoreUserData } from "../Services/Storage";
 import { Authenticate } from "../Services/Auth";
 import { Navigate } from "react-router-dom";
+import {  IoEyeOff } from "react-icons/io5";
+
 const Form = () => {
-  const initialErrors = {
-    name: { required: false },
-    password: { required: false },
-    email: { required: false },
-    number: { required: false },
-    url: { required: false },
-    date: { required: false },
-    select: { required: false },
-    textarea: { required: false },
-    isMarried: { required: false },
-    file: { required: false },
-    radio: { required: false },
-  };
+
 
   const [errors, setErrors] = useState(initialErrors);
   const [loading, setLoading] = useState(false);
@@ -32,7 +23,7 @@ const Form = () => {
     textarea: "",
     file: "",
     isMarried: "",
-    radio:""
+    radio: "",
   });
 
   const handleInput = (event) => {
@@ -83,9 +74,9 @@ const Form = () => {
       errors.isMarried.required = true;
       submitError = true;
     }
-    if(inputs.radio === ""){
-       errors.radio.required = true;
-       submitError=true
+    if (inputs.radio === "") {
+      errors.radio.required = true;
+      submitError = true;
     }
 
     setErrors({ ...errors });
@@ -119,13 +110,19 @@ const Form = () => {
           name="name"
         />
         {errors.name.required ? <p>Name is required</p> : null}
-        <input
-          type="password"
-          onChange={handleInput}
-          placeholder="Password"
-          name="password"
-          id=""
-        />
+        <div className="password">
+          <input
+            className="Pass"
+            type="password"
+            onChange={handleInput}
+            placeholder="Password"
+            name="password"
+            id=""
+          />
+          <span>
+            <IoEyeOff />
+          </span>
+        </div>
         {errors.password.required ? <p>Password is required</p> : null}
         <input
           type="email"
@@ -188,7 +185,7 @@ const Form = () => {
           {errors.radio.required ? <p>Select your gender</p> : null}
         </label>
         <label className="label" htmlFor="">
-        <h4>Marital Statuts : </h4>
+          <h4>Marital Statuts : </h4>
           <input
             type="checkbox"
             name="isMarried"
@@ -207,7 +204,12 @@ const Form = () => {
           unMarried
           {errors.isMarried.required ? <p>Enter your Martial Status</p> : null}
         </label>
-        <textarea name="textarea" placeholder="Describe Something ?" onChange={handleInput} id=""></textarea>
+        <textarea
+          name="textarea"
+          placeholder="Describe Something ?"
+          onChange={handleInput}
+          id=""
+        ></textarea>
         <input type="file" onChange={handleInput} name="file" id="" />
         {errors.file.required ? <p> select yes or No</p> : null}
 
