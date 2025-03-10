@@ -14,12 +14,13 @@ const Form = () => {
     date: { required: false },
     select: { required: false },
     textarea: { required: false },
-    checkbox: { required: false },
+    isMarried: { required: false },
     file: { required: false },
+    radio: { required: false },
   };
 
   const [errors, setErrors] = useState(initialErrors);
-  const [loading,setLoading] = useState (false)
+  const [loading, setLoading] = useState(false);
   const [inputs, setInputs] = useState({
     name: "",
     password: "",
@@ -27,10 +28,13 @@ const Form = () => {
     number: "",
     url: "",
     date: "",
-    select: "",
+    select: "India",
     textarea: "",
     file: "",
+    isMarried: "",
+    radio:""
   });
+
   const handleInput = (event) => {
     setInputs({ ...inputs, [event.target.name]: event.target.value });
   };
@@ -75,25 +79,34 @@ const Form = () => {
       errors.file.required = true;
       submitError = true;
     }
+    if (inputs.isMarried === "") {
+      errors.isMarried.required = true;
+      submitError = true;
+    }
+    if(inputs.radio === ""){
+       errors.radio.required = true;
+       submitError=true
+    }
 
     setErrors({ ...errors });
 
     if (!submitError) {
-      setLoading(true)
+      setLoading(true);
       RegisterApi(inputs)
         .then((response) => {
           StoreUserData(response.data.idToken);
         })
         .catch((err) => {
           console.log(err);
-        }).finally(()=>{
-          setLoading(false)
         })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
   if (Authenticate()) {
-    return <Navigate to="/home"/>;
+    return <Navigate to="/home" />;
   }
 
   return (
@@ -146,20 +159,67 @@ const Form = () => {
           id=""
         />
         {errors.date.required ? <p>Enter your DOB</p> : null}
-        <select name="select" onChange={handleInput} id="">
-          <option value="">Select an Option</option>
-          <option value="Yes">yes</option>
-          <option value="NO">no</option>
-        </select>
-        <textarea name="textarea" onChange={handleInput} id=""></textarea>
-        <input type="file" onChange={handleInput} name="file" id="" />
-        {errors.file.required ? <p>File is required</p> : null}
+        <div className="labels">
+          <label htmlFor="country">Select a Country</label>
+          <select name="select" onChange={handleInput} id="">
+            <option value="India">India</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+          </select>
+          {errors.select.required ? <p>Select a country</p> : null}
+        </div>
 
-        {loading?(<div  className="text-center" >
-                         <div className="spinner-border text-primary " role="status">
-                           <span className="sr-only">Loading...</span>
-                         </div>
-                       </div>):true}
+        <label className="label" htmlFor="">
+          <h4>Gender : </h4>
+          <input
+            type="radio"
+            name="radio"
+            onChange={handleInput}
+            value="Male"
+          />
+          Male
+          <input
+            type="radio"
+            name="radio"
+            onChange={handleInput}
+            value="Female"
+          />
+          Female
+          {errors.radio.required ? <p>Select your gender</p> : null}
+        </label>
+        <label className="label" htmlFor="">
+        <h4>Marital Statuts : </h4>
+          <input
+            type="checkbox"
+            name="isMarried"
+            id="isMarried"
+            onChange={handleInput}
+            value="Married"
+          />
+          Married
+          <input
+            type="checkbox"
+            name="isMarried"
+            id="isMarried"
+            onChange={handleInput}
+            value="UnMarried"
+          />
+          unMarried
+          {errors.isMarried.required ? <p>Enter your Martial Status</p> : null}
+        </label>
+        <textarea name="textarea" placeholder="Describe Something ?" onChange={handleInput} id=""></textarea>
+        <input type="file" onChange={handleInput} name="file" id="" />
+        {errors.file.required ? <p> select yes or No</p> : null}
+
+        {loading ? (
+          <div className="text-center">
+            <div className="spinner-border text-primary " role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          true
+        )}
         <input className="submit-form" type="submit" value="Submit" />
       </form>
     </div>

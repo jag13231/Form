@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+table{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+table td{
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+}
+table td :first-child{
+    font-weight: 600;
+}
+form{
+    width: 250px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

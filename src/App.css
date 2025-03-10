@@ -14,7 +14,7 @@
 
 .form-validation {
   width: 700px;
-  height: auto;
+  height: 1000px;
   border: 1px solid black;
   align-content: center;
   display: flex;
@@ -77,4 +77,34 @@
   width: 103px;
   background: #000000;
   color: white;
+}
+.label{
+  width: 600px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #ebebeb ;
+  
+}
+.label input{
+  width: 20px;
+  height: 20px;
+  margin-bottom: 10px;
+}
+.labels{
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+.gender{
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.genders label input{
+  width: 20px;
+  height: 20px;
 }
