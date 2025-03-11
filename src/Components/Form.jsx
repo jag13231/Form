@@ -5,26 +5,17 @@ import { RegisterApi } from "../Services/Api";
 import { StoreUserData } from "../Services/Storage";
 import { Authenticate } from "../Services/Auth";
 import { Navigate } from "react-router-dom";
-import {  IoEyeOff } from "react-icons/io5";
+import { FaRegEye , FaRegEyeSlash } from "react-icons/fa";
 
-const Form = () => {
+const Form = ({inputs,setInputs,show,setShow}) => {
 
 
+const handleClick = ()=>{
+setShow(!show)
+}
   const [errors, setErrors] = useState(initialErrors);
   const [loading, setLoading] = useState(false);
-  const [inputs, setInputs] = useState({
-    name: "",
-    password: "",
-    email: "",
-    number: "",
-    url: "",
-    date: "",
-    select: "India",
-    textarea: "",
-    file: "",
-    isMarried: "",
-    radio: "",
-  });
+  
 
   const handleInput = (event) => {
     setInputs({ ...inputs, [event.target.name]: event.target.value });
@@ -113,15 +104,16 @@ const Form = () => {
         <div className="password">
           <input
             className="Pass"
-            type="password"
+            type={show ? "text":"password"}
             onChange={handleInput}
             placeholder="Password"
             name="password"
             id=""
           />
-          <span>
-            <IoEyeOff />
+          <span onClick={handleClick}>
+           {show ? <FaRegEyeSlash/> : <FaRegEye />} 
           </span>
+            
         </div>
         {errors.password.required ? <p>Password is required</p> : null}
         <input
