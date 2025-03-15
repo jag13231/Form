@@ -35,13 +35,13 @@
 
 .password{
   width: 600px;
-  border: 1px solid black;
   height: 50px;
   display: flex;
-  justify-content:space-around;
+  gap: 20px;
   align-items: center;
   border-radius: 8px;
   font-size: 20px;
+  
 }
 .password span{
   cursor: pointer;
@@ -51,7 +51,9 @@
   height: 40px;
   margin-bottom: 10px;
   border: none;
-  padding: 0% 1px;
+  padding: 20px 10px;
+  box-shadow:0px 0px 10px 0px grey ;
+  
  }
 
 
@@ -61,8 +63,9 @@
   padding: 6px 6px;
   outline: none;
   border-radius: 8px;
-  border: 1px solid black;
-  margin-top: 10px
+  margin-top: 10px;
+  border: none;
+  box-shadow:0px 0px 10px 0px grey ;
 }
 
 .terms {

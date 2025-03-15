@@ -6,10 +6,8 @@ import { useState } from "react";
 
 function App() {
   const [inputs, setInputs] = useState({
-    name: "",
     password: "",
     email: "",
-    number: "",
     url: "",
     date: "",
     select: "India",

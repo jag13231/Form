@@ -5,17 +5,35 @@ import { RegisterApi } from "../Services/Api";
 import { StoreUserData } from "../Services/Storage";
 import { Authenticate } from "../Services/Auth";
 import { Navigate } from "react-router-dom";
-import { FaRegEye , FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
-const Form = ({inputs,setInputs,show,setShow}) => {
+const Form = ({ inputs, setInputs, show, setShow }) => {
+  // _____________________STATES______________________________ //
 
-
-const handleClick = ()=>{
-setShow(!show)
-}
   const [errors, setErrors] = useState(initialErrors);
   const [loading, setLoading] = useState(false);
-  
+  const [txt, setTxt] = useState("");
+  const [num, setNum] = useState("");
+
+  const handleClick = () => {
+    setShow(!show);
+  };
+
+  const handleText = (e) => {
+    const { value } = e.target;
+    const re = /^[A-Za-z]+$/;
+    if (value === "" || re.test(value)) {
+      setTxt(value);
+    }
+  };
+
+  const handleNum = (e) => {
+    const { value } = e.target;
+    const re = /^[0-9\b]+$/;
+    if (value === "" || re.test(value)) {
+      setNum(value);
+    }
+  };
 
   const handleInput = (event) => {
     setInputs({ ...inputs, [event.target.name]: event.target.value });
@@ -25,10 +43,12 @@ setShow(!show)
     event.preventDefault();
     let submitError = false;
     let errors = initialErrors;
-    if (inputs.name === "") {
+
+    if (txt === "") {
       errors.name.required = true;
       submitError = true;
     }
+
     if (inputs.password === "") {
       errors.password.required = true;
       submitError = true;
@@ -37,7 +57,7 @@ setShow(!show)
       errors.email.required = true;
       submitError = true;
     }
-    if (inputs.number === "") {
+    if (num === "") {
       errors.number.required = true;
       submitError = true;
     }
@@ -96,24 +116,24 @@ setShow(!show)
       <form onSubmit={handleSubmit} className="form-validation" action="">
         <input
           type="text"
-          onChange={handleInput}
+          onChange={handleText}
           placeholder="Username"
           name="name"
+          value={txt}
         />
         {errors.name.required ? <p>Name is required</p> : null}
         <div className="password">
           <input
             className="Pass"
-            type={show ? "text":"password"}
+            type={show ? "text" : "password"}
             onChange={handleInput}
             placeholder="Password"
             name="password"
             id=""
           />
           <span onClick={handleClick}>
-           {show ? <FaRegEyeSlash/> : <FaRegEye />} 
+            {show ? <FaRegEyeSlash /> : <FaRegEye />}
           </span>
-            
         </div>
         {errors.password.required ? <p>Password is required</p> : null}
         <input
@@ -125,11 +145,13 @@ setShow(!show)
         />
         {errors.email.required ? <p>Email is required</p> : null}
         <input
-          type="number"
-          onChange={handleInput}
+          type="text"
+          onChange={handleNum}
           placeholder="Phone number"
           name="number"
+          value={num}
           id=""
+          maxlength={10}
         />
         {errors.number.required ? <p>Number is required</p> : null}
         <input
@@ -203,7 +225,7 @@ setShow(!show)
           id=""
         ></textarea>
         <input type="file" onChange={handleInput} name="file" id="" />
-        {errors.file.required ? <p> select yes or No</p> : null}
+        {errors.file.required ? <p>File is Required</p> : null}
 
         {loading ? (
           <div className="text-center">
